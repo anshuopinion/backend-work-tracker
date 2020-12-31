@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 //Router Imports
 import userRoute from "./routes/userRoute";
+import workRoute from "./routes/workRoute";
 
 import createError from "http-errors";
 import { DB, PORT } from "./config";
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/user", userRoute);
+app.use("/api/work", workRoute);
 
 app.use(() => {
   const error = createError(404, "Could not find this route");

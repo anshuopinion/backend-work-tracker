@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w",
-    "start": "nodemon dist/index.js",
+    "start": "supervisor dist/index.js",
     "start2": "ts-node src/index.ts"
   },
   "keywords": [],

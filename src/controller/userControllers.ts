@@ -5,6 +5,22 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { SECRET } from "../config";
 
+export const getUserById: RequestHandler = async (req, res, next) => {
+  const userId = req.params.uid;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(createHttpError(404, "User Not found"));
+    }
+    const { name, id, email } = user;
+    res.status(200).json({ name, id, email });
+  } catch (error) {
+    return next(
+      createHttpError(501, "something went wrong | Unable to find user")
+    );
+  }
+};
+
 export const userSignup: RequestHandler = async (req, res, next) => {
   const { name, email, password }: IUser = req.body;
 
