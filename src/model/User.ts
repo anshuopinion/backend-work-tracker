@@ -1,4 +1,3 @@
-
 import { Schema, model, Document, Types } from "mongoose";
 import { IWork } from "./Work";
 
@@ -7,7 +6,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   data?: any;
-  work: IWork;
+  works: [IWork];
 }
 
 const UserSchema = new Schema(
@@ -16,7 +15,7 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minlength: 6 },
     data: {},
-    work: [{ type: Types.ObjectId, ref: "Work" }],
+    works: [{ type: Types.ObjectId, ref: "Works" }],
   },
   { timestamps: true }
 );

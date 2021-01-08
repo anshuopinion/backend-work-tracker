@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { addNewWork } from "../controller/workController";
+import { addNewWork, getWorkByUserId } from "../controller/workController";
 
 const router = Router();
-
-router.post("/add-work/:uid", addNewWork);
+router.get("/all/:uid", getWorkByUserId);
+router.post("/create/:uid", addNewWork);
 
 export default router;

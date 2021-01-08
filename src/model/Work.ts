@@ -16,4 +16,4 @@ const WorkSchmea = new Schema(
   { timestamps: true }
 );
 
-export default model<IWork>("work", WorkSchmea);
+export default model<IWork>("works", WorkSchmea);
