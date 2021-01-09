@@ -10,7 +10,7 @@ export const getWorkByUserId: RequestHandler = async (req, res, next) => {
   let user: IUser | null;
 
   try {
-    user = await User.findById(userId).populate("work");
+    user = await User.findById(userId).populate("works");
   } catch (error) {
     return next(
       createHttpError(501, "Something went wrong | Unable to find user")
@@ -18,7 +18,7 @@ export const getWorkByUserId: RequestHandler = async (req, res, next) => {
   }
   if (!user) return next(createHttpError(404, "User not found | Invalid user"));
 
-  return res.status(200).json(user);
+  return res.status(200).json({ works: user.works });
 };
 
 export const addNewWork: RequestHandler = async (req, res, next) => {

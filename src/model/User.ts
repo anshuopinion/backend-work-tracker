@@ -15,9 +15,9 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minlength: 6 },
     data: {},
-    works: [{ type: Types.ObjectId, ref: "Works" }],
+    works: [{ type: Types.ObjectId, required: true, ref: "Work" }],
   },
   { timestamps: true }
 );
 
-export default model<IUser>("user", UserSchema);
+export default model<IUser>("User", UserSchema);
