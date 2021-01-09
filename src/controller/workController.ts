@@ -18,7 +18,7 @@ export const getWorkByUserId: RequestHandler = async (req, res, next) => {
   }
   if (!user) return next(createHttpError(404, "User not found | Invalid user"));
 
-  return res.status(200).json({ works: user.works });
+  return res.status(200).json(user.works);
 };
 
 export const addNewWork: RequestHandler = async (req, res, next) => {
@@ -55,4 +55,16 @@ export const addNewWork: RequestHandler = async (req, res, next) => {
     );
   }
   res.status(201).json(newWork);
+};
+
+export const deleteWork: RequestHandler = async (req, res, next) => {
+  const workId = req.params.wid;
+  try {
+    await Work.findByIdAndDelete(workId);
+  } catch (error) {
+    return next(
+      createHttpError(501, "Something went wrong | Unable to delele work")
+    );
+  }
+  res.status(200).json({ message: "deleted SuccessFully" });
 };
