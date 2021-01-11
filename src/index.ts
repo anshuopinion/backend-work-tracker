@@ -14,7 +14,7 @@ import { DB, PORT } from "./config";
 const app = express();
 const port: number = PORT || 9000;
 app.use(morgan("tiny"));
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: process.env.FRONTEND }));
 app.use(cookieParser());
 app.use(express.json());
 app.get("/", (req, res) => {

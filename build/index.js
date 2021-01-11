@@ -15,7 +15,7 @@ const config_1 = require("./config");
 const app = express_1.default();
 const port = config_1.PORT || 9000;
 app.use(morgan_1.default("tiny"));
-app.use(cors_1.default({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors_1.default({ credentials: true, origin: process.env.FRONTEND }));
 app.use(cookie_parser_1.default());
 app.use(express_1.default.json());
 app.get("/", (req, res) => {
