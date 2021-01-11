@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w",
-    "start": "supervisor dist/index.js",
-    "start2": "ts-node src/index.ts"
+    "start": "node build/index.js",
+    "start2": "ts-node src/index.ts",
+    "startServer":"supervisor build/index.js"
   },
   "keywords": [],
   "author": "",

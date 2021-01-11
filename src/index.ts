@@ -17,7 +17,9 @@ app.use(morgan("tiny"));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(express.json());
-
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "working" });
+});
 app.use("/api/user", userRoute);
 app.use("/api/work", workRoute);
 
