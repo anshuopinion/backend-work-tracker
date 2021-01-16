@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteWork = exports.addNewWork = exports.getWorkByUserId = void 0;
+exports.deleteWork = exports.addNewWork = exports.getWorksByUserId = void 0;
 const http_errors_1 = __importDefault(require("http-errors"));
 const mongoose_1 = require("mongoose");
 const User_1 = __importDefault(require("../model/User"));
 const Work_1 = __importDefault(require("../model/Work"));
-const getWorkByUserId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getWorksByUserId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.uid;
     let user;
     try {
@@ -30,7 +30,7 @@ const getWorkByUserId = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         return next(http_errors_1.default(404, "User not found | Invalid user"));
     return res.status(200).json(user.works);
 });
-exports.getWorkByUserId = getWorkByUserId;
+exports.getWorksByUserId = getWorksByUserId;
 const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.uid;
     const { work_name, work_color, work_complete_date } = req.body;
@@ -38,7 +38,6 @@ const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     const recivedDate = new Date(work_complete_date);
     const diffTime = Math.abs(recivedDate - currentDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays + " days");
     let user;
     try {
         user = yield User_1.default.findById(userId);
@@ -52,6 +51,7 @@ const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         work_name,
         work_color,
         work_complete_date,
+        total_days: diffDays,
     });
     try {
         const sess = yield mongoose_1.startSession();

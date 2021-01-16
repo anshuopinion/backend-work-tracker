@@ -5,7 +5,7 @@ import { startSession } from "mongoose";
 import User, { IUser } from "../model/User";
 import Work, { IWork } from "../model/Work";
 
-export const getWorkByUserId: RequestHandler = async (req, res, next) => {
+export const getWorksByUserId: RequestHandler = async (req, res, next) => {
   const userId = req.params.uid;
   let user: IUser | null;
 
@@ -24,11 +24,13 @@ export const getWorkByUserId: RequestHandler = async (req, res, next) => {
 export const addNewWork: RequestHandler = async (req, res, next) => {
   const userId = req.params.uid;
   const { work_name, work_color, work_complete_date }: IWork = req.body;
+
+  //Calculate Date Difference
   const currentDate: any = new Date();
   const recivedDate: any = new Date(work_complete_date);
   const diffTime = Math.abs(recivedDate - currentDate);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  console.log(diffDays + " days");
+
   let user: IUser | null;
 
   try {
@@ -45,6 +47,7 @@ export const addNewWork: RequestHandler = async (req, res, next) => {
     work_name,
     work_color,
     work_complete_date,
+    total_days: diffDays,
   });
 
   try {
