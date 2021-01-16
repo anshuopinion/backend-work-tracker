@@ -76,3 +76,16 @@ export const deleteWork: RequestHandler = async (req, res, next) => {
   }
   res.status(200).json({ message: "deleted SuccessFully" });
 };
+
+export const getWorkById: RequestHandler = async (req, res, next) => {
+  const workId = req.params.wid;
+  try {
+    const work = await Work.findById(workId);
+    if (!work) return next(createHttpError(404, "Work Not found"));
+    res.status(200).json(work);
+  } catch (error) {
+    return next(
+      createHttpError(501, "Something went wrong ! Unable to find work")
+    );
+  }
+};
