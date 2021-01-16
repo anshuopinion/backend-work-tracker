@@ -24,6 +24,11 @@ export const getWorkByUserId: RequestHandler = async (req, res, next) => {
 export const addNewWork: RequestHandler = async (req, res, next) => {
   const userId = req.params.uid;
   const { work_name, work_color, work_complete_date }: IWork = req.body;
+  const currentDate: any = new Date();
+  const recivedDate: any = new Date(work_complete_date);
+  const diffTime = Math.abs(recivedDate - currentDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  console.log(diffDays + " days");
   let user: IUser | null;
 
   try {

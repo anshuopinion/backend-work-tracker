@@ -34,6 +34,11 @@ exports.getWorkByUserId = getWorkByUserId;
 const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.uid;
     const { work_name, work_color, work_complete_date } = req.body;
+    const currentDate = new Date();
+    const recivedDate = new Date(work_complete_date);
+    const diffTime = Math.abs(recivedDate - currentDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log(diffDays + " days");
     let user;
     try {
         user = yield User_1.default.findById(userId);
