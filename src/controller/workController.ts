@@ -59,7 +59,7 @@ export const addNewWork: RequestHandler = async (req, res, next) => {
     await sess.commitTransaction();
   } catch (error) {
     return next(
-      createHttpError(500, "Unable to create place, Try Again later.")
+      createHttpError(500, "Unable to create work, Try Again later.")
     );
   }
   res.status(201).json(newWork);

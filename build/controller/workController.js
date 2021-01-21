@@ -62,7 +62,7 @@ const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         yield sess.commitTransaction();
     }
     catch (error) {
-        return next(http_errors_1.default(500, "Unable to create place, Try Again later."));
+        return next(http_errors_1.default(500, "Unable to create work, Try Again later."));
     }
     res.status(201).json(newWork);
 });
