@@ -48,5 +48,16 @@ export const addTodo: RequestHandler = async (req, res, next) => {
     return next(createHttpError(501, error));
   }
 };
-export const updateTodo: RequestHandler = async (req, res, next) => {};
+export const updateTodo: RequestHandler = async (req, res, next) => {
+  const todoId = req.params.tid;
+  const { done, name } = req.body;
+  try {
+    const todo = await Todo.findByIdAndUpdate(todoId, { done, name });
+    if (!todo)
+      return next(createHttpError(404, "todo not found, Cannot upate"));
+    res.status(200).json({ todo });
+  } catch (error) {
+    return next(createHttpError(501, error));
+  }
+};
 export const removeTodo: RequestHandler = async (req, res, next) => {};

@@ -69,7 +69,19 @@ const addTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.addTodo = addTodo;
-const updateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const todoId = req.params.tid;
+    const { done, name } = req.body;
+    try {
+        const todo = yield Todo_1.default.findByIdAndUpdate(todoId, { done, name });
+        if (!todo)
+            return next(http_errors_1.default(404, "todo not found, Cannot upate"));
+        res.status(200).json({ todo });
+    }
+    catch (error) {
+        return next(http_errors_1.default(501, error));
+    }
+});
 exports.updateTodo = updateTodo;
 const removeTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.removeTodo = removeTodo;
