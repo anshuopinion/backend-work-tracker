@@ -13,7 +13,7 @@ const WorkSchmea = new Schema(
     work_color: { type: String, required: true },
     work_complete_date: { type: Date, required: true },
     total_days: { type: Number, required: true },
-    per_day: { type: Types.ObjectId, ref: "PerDay" },
+    per_day: { type: Types.ObjectId, ref: "perday" },
   },
   { timestamps: true }
 );

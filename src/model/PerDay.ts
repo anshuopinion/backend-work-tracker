@@ -1,19 +1,15 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
+import { ITodo } from "./Todo";
 
 export interface IPerDay extends Document {
-  todoList: [{ name: string; done: boolean }];
+  todo: [ITodo];
 }
 
 const PerDay = new Schema(
   {
-    todo: [
-      {
-        name: { type: String, required: true },
-        done: { type: Boolean, required: true },
-      },
-    ],
+    todo: [{ type: Types.ObjectId, required: true, ref: "todo" }],
   },
   { timestamps: true }
 );
 
-export default model<IPerDay>("PerDay", PerDay);
+export default model<IPerDay>("perday", PerDay);
