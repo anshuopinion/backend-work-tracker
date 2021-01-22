@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeTodo = exports.updateTodo = exports.addTodo = exports.getTodo = exports.getTodoLists = void 0;
 const http_errors_1 = __importDefault(require("http-errors"));
+const mongoose_1 = require("mongoose");
 const PerDay_1 = __importDefault(require("src/model/PerDay"));
 const Todo_1 = __importDefault(require("src/model/Todo"));
 const getTodoLists = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -42,10 +43,34 @@ const getTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getTodo = getTodo;
-const addTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
+const addTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const perDayId = req.params.pid;
+    const { name } = req.body;
+    try {
+        const perDay = yield PerDay_1.default.findById(perDayId);
+        if (!perDay)
+            return next(http_errors_1.default(404, "Day not found"));
+        const todo = new Todo_1.default({ name, done: false });
+        try {
+            const sess = yield mongoose_1.startSession();
+            sess.startTransaction();
+            yield todo.save({ session: sess });
+            perDay.todo.push(todo);
+            yield perDay.save();
+            yield sess.commitTransaction();
+        }
+        catch (error) {
+            return next(http_errors_1.default(500, error));
+        }
+        res.status(200).json(todo);
+    }
+    catch (error) {
+        return next(http_errors_1.default(501, error));
+    }
+});
 exports.addTodo = addTodo;
 const updateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.updateTodo = updateTodo;
 const removeTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.removeTodo = removeTodo;
-//# sourceMappingURL=perDayContoller.js.map
+//# sourceMappingURL=todoController.js.map
