@@ -83,6 +83,17 @@ const updateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.updateTodo = updateTodo;
-const removeTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
+const removeTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const todoId = req.params.tid;
+    try {
+        const todo = yield Todo_1.default.findByIdAndDelete(todoId);
+        if (!todo)
+            return next(http_errors_1.default(404, "todo not found, Cannot delete"));
+        res.status(200).json({ message: "deleted" });
+    }
+    catch (error) {
+        return next(http_errors_1.default(501, error));
+    }
+});
 exports.removeTodo = removeTodo;
 //# sourceMappingURL=todoController.js.map

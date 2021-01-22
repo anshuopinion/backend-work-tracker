@@ -60,4 +60,15 @@ export const updateTodo: RequestHandler = async (req, res, next) => {
     return next(createHttpError(501, error));
   }
 };
-export const removeTodo: RequestHandler = async (req, res, next) => {};
+export const removeTodo: RequestHandler = async (req, res, next) => {
+  const todoId = req.params.tid;
+
+  try {
+    const todo = await Todo.findByIdAndDelete(todoId);
+    if (!todo)
+      return next(createHttpError(404, "todo not found, Cannot delete"));
+    res.status(200).json({ message: "deleted" });
+  } catch (error) {
+    return next(createHttpError(501, error));
+  }
+};
