@@ -42,12 +42,22 @@ export const addNewWork: RequestHandler = async (req, res, next) => {
   }
 
   if (!user) return next(createHttpError(404, "User not found | Invalid user"));
+  const days = [];
+  const yesterday = new Date(currentDate.setDate(currentDate.getDate() - 1));
+  for (let i = 0; i <= diffDays - 1; i++) {
+    const day = new Date(
+      yesterday.setDate(yesterday.getDate() + 1)
+    ).toLocaleDateString();
+
+    days.push({ date: day });
+  }
+  console.log(days);
 
   const newWork = new Work({
     work_name,
     work_color,
     work_complete_date,
-    total_days: diffDays,
+    days,
   });
 
   try {

@@ -5,7 +5,7 @@ import {
   getTodoLists,
   removeTodo,
   updateTodo,
-} from "src/controller/todoController";
+} from "../controller/todoController";
 import {
   addNewWork,
   deleteWork,
@@ -23,7 +23,7 @@ router.delete("/remove/:wid", deleteWork);
 
 router.get("/todos/:pid", getTodoLists);
 router.get("/todo/:tid", getTodo);
-router.post("/todo/:pid", addTodo);
+router.post("/todo/:wid", addTodo);
 router.put("/todo/:tid", updateTodo);
 router.delete("/todo/:tid", removeTodo);
 export default router;
