@@ -1,22 +1,24 @@
-import { RequestHandler, response } from "express";
+import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import Day from "src/model/Day";
-import Work from "src/model/Work";
+// import { startSession } from "mongoose";
+import Day from "../model/Day";
+import Work from "../model/Work";
 
 export const addDay: RequestHandler = async (req, res, next) => {
   const workId = req.params.wid;
-  const date = req.params.date;
   try {
     const work = await Work.findById(workId);
+    const date = new Date().toDateString();
     if (!work) return next(createHttpError(404, "work not found"));
-    const day = new Day({ date });
-    try {
-      work.days.push(day);
-      await work.save();
-    } catch (error) {
-      return next(createHttpError(501, error));
+    const existingDate = await Work.find({ date });
+    if (existingDate) {
+      return next(createHttpError(409, "already exist"));
     }
-    res.status(201).json({ work });
+    const day = new Day({ date });
+    await day.save();
+    work.days.push(day);
+    work.save();
+    res.status(201).json({ day });
   } catch (error) {
     return next(createHttpError(501, error));
   }

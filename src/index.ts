@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser";
 //Router Imports
 import userRoute from "./routes/userRoute";
 import workRoute from "./routes/workRoute";
+import todoRoute from "./routes/todoRoute";
+import dayRoute from "./routes/dayRoute";
 
 import createError from "http-errors";
 import { DB, PORT } from "./config";
@@ -21,7 +23,9 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "working" });
 });
 app.use("/api/user", userRoute);
+app.use("/api/day", dayRoute);
 app.use("/api/work", workRoute);
+app.use("/api/todo", todoRoute);
 
 app.use(() => {
   const error = createError(404, "Could not find this route");
@@ -29,13 +33,13 @@ app.use(() => {
 });
 
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  console.log(error.message);
-
+  console.log(error.message, error.statusCode);
   if (res.headersSent) {
     return next(error);
   }
+
   res
-    .status(error.code || 500)
+    .status(error.statusCode || 500)
     .json({ message: error.message || "An Unknown error occured" });
 };
 

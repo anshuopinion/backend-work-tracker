@@ -1,4 +1,3 @@
-import { string } from "joi";
 import { Schema, model, Document, Types } from "mongoose";
 import { ITodo } from "./Todo";
 

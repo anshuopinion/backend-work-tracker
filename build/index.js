@@ -10,6 +10,8 @@ const morgan_1 = __importDefault(require("morgan"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const workRoute_1 = __importDefault(require("./routes/workRoute"));
+const todoRoute_1 = __importDefault(require("./routes/todoRoute"));
+const dayRoute_1 = __importDefault(require("./routes/dayRoute"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const config_1 = require("./config");
 const app = express_1.default();
@@ -22,18 +24,20 @@ app.get("/", (req, res) => {
     res.status(200).json({ message: "working" });
 });
 app.use("/api/user", userRoute_1.default);
+app.use("/api/day", dayRoute_1.default);
 app.use("/api/work", workRoute_1.default);
+app.use("/api/todo", todoRoute_1.default);
 app.use(() => {
     const error = http_errors_1.default(404, "Could not find this route");
     throw error;
 });
 const errorHandler = (error, req, res, next) => {
-    console.log(error.message);
+    console.log(error.message, error.statusCode);
     if (res.headersSent) {
         return next(error);
     }
     res
-        .status(error.code || 500)
+        .status(error.statusCode || 500)
         .json({ message: error.message || "An Unknown error occured" });
 };
 app.use(errorHandler);

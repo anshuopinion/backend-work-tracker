@@ -14,24 +14,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addDay = void 0;
 const http_errors_1 = __importDefault(require("http-errors"));
-const Day_1 = __importDefault(require("src/model/Day"));
-const Work_1 = __importDefault(require("src/model/Work"));
+const Day_1 = __importDefault(require("../model/Day"));
+const Work_1 = __importDefault(require("../model/Work"));
 const addDay = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const workId = req.params.wid;
-    const date = req.params.date;
     try {
         const work = yield Work_1.default.findById(workId);
+        const date = new Date().toDateString();
         if (!work)
             return next(http_errors_1.default(404, "work not found"));
+        const existingDate = yield Work_1.default.find({ date });
+        if (existingDate) {
+            return next(http_errors_1.default(409, "already exist"));
+        }
         const day = new Day_1.default({ date });
-        try {
-            work.days.push(day);
-            yield work.save();
-        }
-        catch (error) {
-            return next(http_errors_1.default(501, error));
-        }
-        res.status(201).json({ work });
+        yield day.save();
+        work.days.push(day);
+        work.save();
+        res.status(201).json({ day });
     }
     catch (error) {
         return next(http_errors_1.default(501, error));
