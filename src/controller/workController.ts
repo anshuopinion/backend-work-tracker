@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import { startSession } from "mongoose";
-// import { startSession } from "mongoose";
 import User, { IUser } from "../model/User";
 import Work, { IWork } from "../model/Work";
-import Day from "../model/Day";
 export const getWorksByUserId: RequestHandler = async (req, res, next) => {
   const userId = req.params.uid;
   let user: IUser | null;
@@ -42,27 +40,19 @@ export const addNewWork: RequestHandler = async (req, res, next) => {
   }
 
   if (!user) return next(createHttpError(404, "User not found | Invalid user"));
-  const yesterday = new Date(currentDate.setDate(currentDate.getDate() - 1));
+
   const newWork = new Work({
     work_name,
     work_color,
     work_complete_date,
+    total_days: diffDays,
   });
-  for (let i = 0; i <= diffDays - 1; i++) {
-    const day = new Date(
-      yesterday.setDate(yesterday.getDate() + 1)
-    ).toLocaleDateString();
-    const eachDate = new Day({ date: day });
-    await eachDate.save();
-    newWork.days.push(eachDate);
-  }
+
   try {
     const sess = await startSession();
     sess.startTransaction();
-
     await newWork.save({ session: sess });
     user.works.push(newWork);
-
     await user.save();
     await sess.commitTransaction();
   } catch (error) {

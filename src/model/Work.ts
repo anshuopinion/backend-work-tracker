@@ -14,6 +14,7 @@ const WorkSchmea = new Schema(
     work_name: { type: String, required: true },
     work_color: { type: String, required: true },
     work_complete_date: { type: Date, required: true },
+    total_days: { type: String, required: true },
     days: [{ type: Types.ObjectId, ref: "day" }],
   },
   { timestamps: true }
