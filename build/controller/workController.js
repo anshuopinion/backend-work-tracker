@@ -17,6 +17,7 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const mongoose_1 = require("mongoose");
 const User_1 = __importDefault(require("../model/User"));
 const Work_1 = __importDefault(require("../model/Work"));
+const Day_1 = __importDefault(require("../model/Day"));
 const getWorksByUserId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.uid;
     let user;
@@ -47,19 +48,18 @@ const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
     if (!user)
         return next(http_errors_1.default(404, "User not found | Invalid user"));
-    const days = [];
     const yesterday = new Date(currentDate.setDate(currentDate.getDate() - 1));
-    for (let i = 0; i <= diffDays - 1; i++) {
-        const day = new Date(yesterday.setDate(yesterday.getDate() + 1)).toLocaleDateString();
-        days.push({ date: day });
-    }
-    console.log(days);
     const newWork = new Work_1.default({
         work_name,
         work_color,
         work_complete_date,
-        days,
     });
+    for (let i = 0; i <= diffDays - 1; i++) {
+        const day = new Date(yesterday.setDate(yesterday.getDate() + 1)).toLocaleDateString();
+        const eachDate = new Day_1.default({ date: day });
+        yield eachDate.save();
+        newWork.days.push(eachDate);
+    }
     try {
         const sess = yield mongoose_1.startSession();
         sess.startTransaction();
@@ -69,7 +69,7 @@ const addNewWork = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         yield sess.commitTransaction();
     }
     catch (error) {
-        return next(http_errors_1.default(500, "Unable to create work, Try Again later."));
+        return next(http_errors_1.default(500, error));
     }
     res.status(201).json(newWork);
 });

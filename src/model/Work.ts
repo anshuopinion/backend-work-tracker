@@ -1,13 +1,12 @@
 import { Schema, model, Document, Types } from "mongoose";
-
-import { ITodo } from "./Todo";
+import { IDay } from "./Day";
 
 export interface IWork extends Document {
   work_name: string;
   work_color: string;
   work_complete_date: Date;
   total_days: number;
-  days: [{ date: string; todo: [ITodo] }];
+  days: [IDay];
 }
 
 const WorkSchmea = new Schema(
@@ -15,12 +14,7 @@ const WorkSchmea = new Schema(
     work_name: { type: String, required: true },
     work_color: { type: String, required: true },
     work_complete_date: { type: Date, required: true },
-    days: [
-      {
-        date: { type: String, required: true },
-        todo: [{ type: Types.ObjectId, ref: "todo" }],
-      },
-    ],
+    days: [{ type: Types.ObjectId, ref: "day" }],
   },
   { timestamps: true }
 );

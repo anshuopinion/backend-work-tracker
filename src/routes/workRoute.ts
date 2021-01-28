@@ -21,7 +21,7 @@ router.delete("/remove/:wid", deleteWork);
 
 // todo routes
 
-router.get("/todos/:pid", getTodoLists);
+router.get("/todos/:did", getTodoLists);
 router.get("/todo/:tid", getTodo);
 router.post("/todo/:wid", addTodo);
 router.put("/todo/:tid", updateTodo);

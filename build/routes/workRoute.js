@@ -8,7 +8,7 @@ router.get("/:wid", workController_1.getWorkById);
 router.get("/all/:uid", workController_1.getWorksByUserId);
 router.post("/create/:uid", workController_1.addNewWork);
 router.delete("/remove/:wid", workController_1.deleteWork);
-router.get("/todos/:pid", todoController_1.getTodoLists);
+router.get("/todos/:did", todoController_1.getTodoLists);
 router.get("/todo/:tid", todoController_1.getTodo);
 router.post("/todo/:wid", todoController_1.addTodo);
 router.put("/todo/:tid", todoController_1.updateTodo);

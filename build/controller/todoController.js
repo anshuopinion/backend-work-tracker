@@ -15,8 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeTodo = exports.updateTodo = exports.addTodo = exports.getTodo = exports.getTodoLists = void 0;
 const http_errors_1 = __importDefault(require("http-errors"));
 const Todo_1 = __importDefault(require("../model/Todo"));
-const getTodoLists = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-});
+const getTodoLists = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.getTodoLists = getTodoLists;
 const getTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const todoId = req.params.tid;

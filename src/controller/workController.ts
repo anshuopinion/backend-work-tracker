@@ -4,7 +4,7 @@ import { startSession } from "mongoose";
 // import { startSession } from "mongoose";
 import User, { IUser } from "../model/User";
 import Work, { IWork } from "../model/Work";
-
+import Day from "../model/Day";
 export const getWorksByUserId: RequestHandler = async (req, res, next) => {
   const userId = req.params.uid;
   let user: IUser | null;
@@ -42,35 +42,31 @@ export const addNewWork: RequestHandler = async (req, res, next) => {
   }
 
   if (!user) return next(createHttpError(404, "User not found | Invalid user"));
-  const days = [];
   const yesterday = new Date(currentDate.setDate(currentDate.getDate() - 1));
-  for (let i = 0; i <= diffDays - 1; i++) {
-    const day = new Date(
-      yesterday.setDate(yesterday.getDate() + 1)
-    ).toLocaleDateString();
-
-    days.push({ date: day });
-  }
-  console.log(days);
-
   const newWork = new Work({
     work_name,
     work_color,
     work_complete_date,
-    days,
   });
-
+  for (let i = 0; i <= diffDays - 1; i++) {
+    const day = new Date(
+      yesterday.setDate(yesterday.getDate() + 1)
+    ).toLocaleDateString();
+    const eachDate = new Day({ date: day });
+    await eachDate.save();
+    newWork.days.push(eachDate);
+  }
   try {
     const sess = await startSession();
     sess.startTransaction();
+
     await newWork.save({ session: sess });
     user.works.push(newWork);
+
     await user.save();
     await sess.commitTransaction();
   } catch (error) {
-    return next(
-      createHttpError(500, "Unable to create work, Try Again later.")
-    );
+    return next(createHttpError(500, error));
   }
   res.status(201).json(newWork);
 };

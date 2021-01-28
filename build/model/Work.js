@@ -5,12 +5,7 @@ const WorkSchmea = new mongoose_1.Schema({
     work_name: { type: String, required: true },
     work_color: { type: String, required: true },
     work_complete_date: { type: Date, required: true },
-    days: [
-        {
-            date: { type: String, required: true },
-            todo: [{ type: mongoose_1.Types.ObjectId, ref: "todo" }],
-        },
-    ],
+    days: [{ type: mongoose_1.Types.ObjectId, ref: "day" }],
 }, { timestamps: true });
 exports.default = mongoose_1.model("Work", WorkSchmea);
 //# sourceMappingURL=Work.js.map
