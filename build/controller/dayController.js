@@ -19,20 +19,18 @@ const Work_1 = __importDefault(require("../model/Work"));
 const addDay = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const workId = req.params.wid;
     try {
+        const date = new Date().toLocaleDateString().split("/").join("-");
         const work = yield Work_1.default.findById(workId);
-        const date = new Date().toDateString();
         if (!work)
             return next(http_errors_1.default(404, "work not found"));
-        const existingDate = yield Work_1.default.find();
-        if (existingDate) {
-            console.log(existingDate);
-            return next(http_errors_1.default(409, "already exist"));
-        }
+        const dayExist = work.days.filter((day) => day.date !== date);
+        if (dayExist)
+            return next(http_errors_1.default(407, "day already exist"));
         const day = new Day_1.default({ date });
         yield day.save();
         work.days.push(day);
         work.save();
-        res.status(201).json({ day });
+        res.status(201).json(day);
     }
     catch (error) {
         return next(http_errors_1.default(501, error));
