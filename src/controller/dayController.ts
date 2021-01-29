@@ -1,4 +1,3 @@
-import { createHash } from "crypto";
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 // import { startSession } from "mongoose";
@@ -12,7 +11,8 @@ export const addDay: RequestHandler = async (req, res, next) => {
     const work = await Work.findById(workId);
     if (!work) return next(createHttpError(404, "work not found"));
     const dayExist = work.days.filter((day) => day.date !== date);
-    if (dayExist) return next(createHttpError(407, "day already exist"));
+    if (dayExist.length !== 0)
+      return next(createHttpError(407, "day already exist"));
     const day = new Day({ date });
     await day.save();
     work.days.push(day);
@@ -22,3 +22,5 @@ export const addDay: RequestHandler = async (req, res, next) => {
     return next(createHttpError(501, error));
   }
 };
+
+//

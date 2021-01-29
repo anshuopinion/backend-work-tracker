@@ -24,7 +24,7 @@ const addDay = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         if (!work)
             return next(http_errors_1.default(404, "work not found"));
         const dayExist = work.days.filter((day) => day.date !== date);
-        if (dayExist)
+        if (dayExist.length !== 0)
             return next(http_errors_1.default(407, "day already exist"));
         const day = new Day_1.default({ date });
         yield day.save();
