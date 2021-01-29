@@ -23,8 +23,9 @@ const addDay = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         const date = new Date().toDateString();
         if (!work)
             return next(http_errors_1.default(404, "work not found"));
-        const existingDate = yield Work_1.default.find({ date });
+        const existingDate = yield Work_1.default.find();
         if (existingDate) {
+            console.log(existingDate);
             return next(http_errors_1.default(409, "already exist"));
         }
         const day = new Day_1.default({ date });

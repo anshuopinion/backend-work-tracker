@@ -10,8 +10,10 @@ export const addDay: RequestHandler = async (req, res, next) => {
     const work = await Work.findById(workId);
     const date = new Date().toDateString();
     if (!work) return next(createHttpError(404, "work not found"));
-    const existingDate = await Work.find({ date });
+    const existingDate = await Work.find();
     if (existingDate) {
+      console.log(existingDate);
+
       return next(createHttpError(409, "already exist"));
     }
     const day = new Day({ date });
